@@ -28,7 +28,7 @@ module.exports = {
       },
     ],
     'no-unused-vars': 'error',
-    'react/prop-types': 'error',
+    'react/prop-types': 'off',
     'no-console': 'warn',
   },
 };

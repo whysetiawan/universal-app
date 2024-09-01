@@ -1,21 +1,21 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { View } from 'react-native';
 
 import { useBreakpoints } from '#/shared/lib/breakpoints';
 
-export default function WebTabLayout() {
+function TabRoutes() {
   const { gtPhone } = useBreakpoints();
-
-  if (gtPhone) {
-    return null;
-  }
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
+        tabBarStyle: {
+          display: !gtPhone ? 'flex' : 'none',
+        },
       }}>
       <Tabs.Screen
         name="(home)/index"
@@ -79,5 +79,13 @@ export default function WebTabLayout() {
         }}
       />
     </Tabs>
+  );
+}
+
+export default function WebTabLayout() {
+  return (
+    <View style={{ backgroundColor: 'white', flex: 1 }}>
+      <Tabs />
+    </View>
   );
 }

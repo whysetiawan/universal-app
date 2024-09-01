@@ -36,15 +36,15 @@ export default function AppLayout() {
   return (
     <NavigationThemeProvider
       value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <RootContainer />
+      <RootNavigation />
     </NavigationThemeProvider>
   );
 }
 
-const RootContainer: React.FC = () => {
+const RootNavigation: React.FC = () => {
   return (
     <Stack>
-      <Stack.Screen name="(main)" options={{ headerShown: false }} />
+      <Stack.Screen name="(main)" />
       <Stack.Screen name="+not-found" />
     </Stack>
   );
