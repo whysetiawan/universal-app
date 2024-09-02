@@ -1,4 +1,4 @@
-import { ScrollViewStyleReset } from 'expo-router/html';
+// import { ScrollViewStyleReset } from 'expo-router/html';
 import { type PropsWithChildren } from 'react';
 
 /**
@@ -49,13 +49,6 @@ export default function Root({ children }: PropsWithChildren) {
           name="description"
           content="Lahelu adalah komunitas meme Indonesia terbesar, penuh dengan koleksi gambar dan video lucu setiap harinya. Kami menerima segala macam humor dimanapun dan kapanpun."
         />
-
-        {/*
-          Disable body scrolling on web. This makes ScrollView components work closer to how they do on native.
-          However, body scrolling is often nice to have for mobile web. If you want to enable it, remove this line.
-        */}
-        <ScrollViewStyleReset />
-
         {/* Using raw CSS styles as an escape-hatch to ensure the background color never flickers in dark-mode. */}
         <style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
         {/* Add any additional <head> elements that you want globally available on web... */}
@@ -66,11 +59,38 @@ export default function Root({ children }: PropsWithChildren) {
 }
 
 const responsiveBackground = `
-body {
-  background-color: #fff;
-}
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #333;
+  
+  /* These styles make the body full-height */
+  html, body, #root { 
+    /* To smooth any scrolling behavior */
+    -webkit-overflow-scrolling: touch;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    overflow-y: hidden;
   }
-}`;
+  #root {
+    flex-shrink: 0;
+    flex-basis: auto;
+    flex-grow: 1;
+    display: flex;
+    flex: 1;
+  }
+
+  /* Color theming */
+  /* Default will always be white */
+  :root {
+    --text: black;
+    --background: white;
+    --backgroundLight: #ffffff;
+  }
+  /* This gives us a black background when system is dark and we have not loaded the theme/color scheme values in JS */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text: white;
+      --background: black;
+      --backgroundLight: #333333;
+      color-scheme: dark;
+    }
+  }
+`;

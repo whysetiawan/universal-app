@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import type { ListRenderItem } from 'react-native';
+import { View, type ListRenderItem } from 'react-native';
 
-import FlatList from '@/src/shared/components/FlatList/FlatList';
+import FlatList from '#/shared/lib/components/FlatList/FlatList';
 
 import FeedListItem from './FeedListItem';
 import postDummy from './posts.json';
@@ -15,9 +15,11 @@ const FeedList: React.FC = () => {
 
   return (
     <FlatList<Post>
+      showsVerticalScrollIndicator={false}
       role="main"
       data={postDummy.postInfos}
       renderItem={_renderItem}
+      ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
     />
   );
 };

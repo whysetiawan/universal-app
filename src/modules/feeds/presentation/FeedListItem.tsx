@@ -1,24 +1,41 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { Image } from 'expo-image';
 import { memo } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { s } from '#/shared/lib/styles';
+import { useBreakpoints } from '#/shared/lib/breakpoints';
+import { flatten, s } from '#/shared/lib/styles';
 
 import type { Post } from './FeedList';
 dayjs.extend(relativeTime);
 
 const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
-  console.log(' item.title', item.title);
-  console.log('item.width', item.mediaWidth);
-  console.log('item.mediaHeight', item.mediaHeight);
+  const { gtPhone, gtMobile, gtTablet } = useBreakpoints();
+  const aspectRatio =
+    (gtPhone ? 20 + item.mediaWidth : item.mediaWidth) / item.mediaHeight;
+
+  let spacing = 16;
+  if (gtPhone) {
+    spacing = 24;
+  }
+  if (gtMobile) {
+    spacing = 32;
+  }
+  if (gtTablet) {
+    spacing = 40;
+  }
+
   return (
     <View style={s.gap_md}>
-      <View style={s.px_lg}>
+      <View
+        style={{
+          paddingHorizontal: spacing,
+        }}>
         <View style={[s.flex_row, s.justify_between, s.items_center]}>
           <View style={[s.flex_row, s.gap_sm, s.items_center]}>
-            <AnonymousAvatar />
+            <Avatar />
             <Text style={{ color: 'white' }}>{item.userUsername}</Text>
             <Text style={{ color: 'white' }}>
               · {dayjs(item.createTime).fromNow()}
@@ -28,40 +45,42 @@ const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
         </View>
         <Text style={[{ color: 'white' }, s.my_sm]}>{item.title}</Text>
       </View>
-      <View
+      <Image
+        source={{
+          uri: `https://cache.lahelu.com/${item.media}`,
+        }}
         style={{
-          width: '100%',
-          aspectRatio: item.mediaWidth / item.mediaHeight,
-          maxHeight: 720,
-          maxWidth: 500,
-        }}>
-        <Image
-          source={{
-            uri: `https://cache.lahelu.com/${item.media}`,
-          }}
-          style={s.flex_1}
-          resizeMode="contain"
-        />
-      </View>
+          aspectRatio: aspectRatio,
+          borderRadius: gtPhone ? 16 : 0,
+          objectFit: 'contain',
+          marginHorizontal: !gtPhone ? 0 : spacing,
+        }}
+      />
     </View>
   );
 };
 
-const AnonymousAvatar = () => {
+const Avatar = memo(() => {
   return (
-    <View
-      style={[styles.avatar, s.rounded_full, s.items_center, s.justify_center]}>
+    <View style={styles.avatar}>
       <Text>😀</Text>
     </View>
   );
-};
+});
+
+Avatar.displayName = 'Avatar';
 
 const styles = StyleSheet.create({
-  avatar: {
-    width: 32,
-    height: 32,
-    backgroundColor: '#f0f0f0',
-  },
+  avatar: flatten([
+    {
+      width: 32,
+      height: 32,
+      backgroundColor: '#f0f0f0',
+    },
+    s.rounded_full,
+    s.items_center,
+    s.justify_center,
+  ]),
 });
 
 export default memo(FeedListItem);

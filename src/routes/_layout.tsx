@@ -1,13 +1,11 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider as NavigationThemeProvider,
-} from '@react-navigation/native';
+import { ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+
+import { theme } from '#/shared/lib/styles';
 import 'react-native-reanimated';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -35,7 +33,7 @@ export default function AppLayout() {
 
   return (
     <NavigationThemeProvider
-      value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      value={colorScheme === 'dark' ? theme.DarkTheme : theme.LightTheme}>
       <RootNavigation />
     </NavigationThemeProvider>
   );
@@ -44,7 +42,7 @@ export default function AppLayout() {
 const RootNavigation: React.FC = () => {
   return (
     <Stack>
-      <Stack.Screen name="(main)" />
+      <Stack.Screen name="(main)" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
   );
