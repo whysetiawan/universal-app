@@ -18,8 +18,8 @@ const FeedList: React.FC = () => {
   return (
     <SafeAreaView edges={['left']}>
       <FlatList<Post>
-        contentContainerStyle={s.pt_lg}
-        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[s.pt_lg, s.flex_grow]}
+        showsVerticalScrollIndicator={true}
         role="main"
         data={postDummy.postInfos}
         renderItem={_renderItem}
