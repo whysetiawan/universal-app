@@ -4,7 +4,11 @@
  */
 module.exports = {
   extends: ['expo', 'prettier'],
-  plugins: ['prettier', 'eslint-plugin-react-compiler'],
+  plugins: [
+    'prettier',
+    'eslint-plugin-react-compiler',
+    '@tanstack/eslint-plugin-query',
+  ],
   parser: '@typescript-eslint/parser',
   rules: {
     'prettier/prettier': 'error',
