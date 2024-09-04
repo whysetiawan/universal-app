@@ -1,11 +1,14 @@
 import { ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
+import { queryClient } from '#/shared/lib/react-query/queryClient';
 import { theme } from '#/shared/lib/styles';
+
 import 'react-native-reanimated';
 import '@expo/match-media';
 
@@ -33,10 +36,12 @@ export default function AppLayout() {
   }
 
   return (
-    <NavigationThemeProvider
-      value={colorScheme === 'dark' ? theme.DarkTheme : theme.LightTheme}>
-      <RootNavigation />
-    </NavigationThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <NavigationThemeProvider
+        value={colorScheme === 'dark' ? theme.DarkTheme : theme.LightTheme}>
+        <RootNavigation />
+      </NavigationThemeProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -1,5 +1,5 @@
-import FeedList from '#/modules/feeds/presentation/FeedList';
+import PostsList from '#/modules/posts/presentation/PostsList';
 
 export default function HomeScreen() {
-  return <FeedList />;
+  return <PostsList />;
 }

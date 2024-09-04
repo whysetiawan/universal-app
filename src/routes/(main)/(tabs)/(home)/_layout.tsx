@@ -6,9 +6,6 @@ const TabsHomeLayout = () => {
   return (
     <RouterTopTabs
       overScrollMode="always"
-      sceneContainerStyle={{
-        overflow: 'auto' as 'scroll',
-      }}
       screenOptions={{
         swipeEnabled: false,
         animationEnabled: true,

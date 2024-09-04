@@ -5,18 +5,18 @@ import { Image } from 'expo-image';
 import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import type { PostEntity } from '#/modules/posts/domain/entities/postEntity';
 import useBreakpoints from '#/shared/lib/breakpoints';
 import { s } from '#/shared/lib/styles';
 import { useAppTheme } from '#/shared/lib/styles/theme';
 
-import type { Post } from './FeedList';
 dayjs.extend(relativeTime);
 
-const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
+const FeedListItem: React.FC<{ item: PostEntity }> = ({ item }) => {
   const { gtPhone, gtMobile, gtTablet } = useBreakpoints();
   const t = useAppTheme();
   const aspectRatio =
-    (gtPhone ? 20 + item.mediaWidth : item.mediaWidth) / item.mediaHeight;
+    (gtPhone ? 20 + item.media.width : item.media.width) / item.media.height;
 
   let spacing = 16;
   if (gtPhone) {
@@ -38,9 +38,9 @@ const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
         <View style={[s.flex_row, s.justify_between, s.items_center]}>
           <View style={[s.flex_row, s.gap_sm, s.items_center]}>
             <Avatar />
-            <Text style={t.utils.text}>{item.userUsername}</Text>
+            <Text style={t.utils.text}>{item.postedBy.username}</Text>
             <Text style={t.utils.text}>
-              · {dayjs(item.createTime).fromNow()}
+              · {dayjs(item.createdAt).fromNow()}
             </Text>
           </View>
           <MaterialIcons name="more-horiz" color={t.colors.text} size={24} />
@@ -49,13 +49,14 @@ const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
       </View>
       <Image
         source={{
-          uri: `https://cache.lahelu.com/${item.media}`,
+          uri: item.media.uri,
         }}
         style={{
           aspectRatio: aspectRatio,
           borderRadius: gtPhone ? 8 : 0,
           objectFit: 'contain',
           marginHorizontal: !gtPhone ? 0 : spacing,
+          backgroundColor: t.colors.background,
         }}
       />
     </View>

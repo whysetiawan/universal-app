@@ -23,14 +23,15 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       [
         "expo-router",
         {
-          "root": "./src/routes"
+          "root": "./src/routes",
+          "origin": "https://lahelu.dev"
         }
       ]
     ],

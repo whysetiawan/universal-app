@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { ViewStyle, StyleProp, View, EasingFunction } from 'react-native';
 import { Animated, Easing } from 'react-native';
 
@@ -33,7 +33,7 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   const [height] = useState(new Animated.Value(collapsedHeight));
   const contentHandle = useRef<View>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const measureContent = (callback: (height: number) => void) => {
       setMeasuring(true);
       if (contentHandle.current) {

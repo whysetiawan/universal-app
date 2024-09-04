@@ -14,14 +14,13 @@ async function setupMockServer() {
   // @ts-expect-error
   await import('./msw.polyfills');
   server.listen();
+  console.log('Mock Service Worker started');
 }
 if (Platform.OS !== 'web') {
-  setupMockServer().then(() => {
-    console.log('Mock Service Worker started');
-    renderRootComponent(App);
-  });
+  renderRootComponent(App);
+  setupMockServer().then(() => {});
 } else {
-  worker.start().then(() => {
+  worker?.start().then(() => {
     console.log('Mock Service Worker started');
     renderRootComponent(App);
   });
