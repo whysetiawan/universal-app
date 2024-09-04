@@ -9,6 +9,7 @@ module.exports = function (api) {
           runtimeModule: 'react-compiler-runtime',
         },
       ], // must run first!
+      'react-native-reanimated/plugin',
     ],
   };
 };

@@ -1,17 +1,17 @@
-import { useTheme } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { useBreakpoints } from '#/shared/lib/breakpoints';
+import useBreakpoints from '#/shared/lib/breakpoints';
 import Divider from '#/shared/lib/components/Divider';
 import { s } from '#/shared/lib/styles';
+import { useAppTheme } from '#/shared/lib/styles/theme';
 import topics from '#/temporaries/topics.json';
 
 export const ADVERT_BAR_WIDTH = 340;
 
 const AdvertBar = () => {
   const { gtMobile } = useBreakpoints();
-  const { colors } = useTheme();
+  const { colors } = useAppTheme();
   if (!gtMobile) return null;
 
   return (
@@ -31,11 +31,15 @@ const AdvertBar = () => {
                 }}
                 style={[s.rounded_lg, styles.media]}
               />
-              <View>
+              <View style={[s.flex_shrink, s.flex_wrap]}>
                 <Text
                   style={[
-                    { color: colors.text, fontSize: 16, fontWeight: 'bold' },
                     s.ml_md,
+                    s.text_md,
+                    s.font_bold,
+                    {
+                      color: colors.text,
+                    },
                   ]}>
                   {topic.title}
                 </Text>

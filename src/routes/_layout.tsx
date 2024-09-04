@@ -7,6 +7,7 @@ import { useColorScheme } from 'react-native';
 
 import { theme } from '#/shared/lib/styles';
 import 'react-native-reanimated';
+import '@expo/match-media';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

@@ -67,7 +67,7 @@ const responsiveBackground = `
     margin: 0px;
     padding: 0px;
     height: 100%;
-    overflow-y: hidden;
+    overflow: initial;
   }
   #root {
     flex-shrink: 0;

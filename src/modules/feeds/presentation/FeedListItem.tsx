@@ -5,14 +5,16 @@ import { Image } from 'expo-image';
 import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { useBreakpoints } from '#/shared/lib/breakpoints';
-import { flatten, s } from '#/shared/lib/styles';
+import useBreakpoints from '#/shared/lib/breakpoints';
+import { s } from '#/shared/lib/styles';
+import { useAppTheme } from '#/shared/lib/styles/theme';
 
 import type { Post } from './FeedList';
 dayjs.extend(relativeTime);
 
 const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
   const { gtPhone, gtMobile, gtTablet } = useBreakpoints();
+  const theme = useAppTheme();
   const aspectRatio =
     (gtPhone ? 20 + item.mediaWidth : item.mediaWidth) / item.mediaHeight;
 
@@ -24,7 +26,7 @@ const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
     spacing = 32;
   }
   if (gtTablet) {
-    spacing = 40;
+    spacing = 48;
   }
 
   return (
@@ -36,14 +38,18 @@ const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
         <View style={[s.flex_row, s.justify_between, s.items_center]}>
           <View style={[s.flex_row, s.gap_sm, s.items_center]}>
             <Avatar />
-            <Text style={{ color: 'white' }}>{item.userUsername}</Text>
-            <Text style={{ color: 'white' }}>
+            <Text style={{ color: theme.colors.text }}>
+              {item.userUsername}
+            </Text>
+            <Text style={{ color: theme.colors.text }}>
               · {dayjs(item.createTime).fromNow()}
             </Text>
           </View>
           <MaterialIcons name="more-horiz" color="white" size={24} />
         </View>
-        <Text style={[{ color: 'white' }, s.my_sm]}>{item.title}</Text>
+        <Text style={[{ color: theme.colors.text }, s.my_sm]}>
+          {item.title}
+        </Text>
       </View>
       <Image
         source={{
@@ -51,7 +57,7 @@ const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
         }}
         style={{
           aspectRatio: aspectRatio,
-          borderRadius: gtPhone ? 16 : 0,
+          borderRadius: gtPhone ? 8 : 0,
           objectFit: 'contain',
           marginHorizontal: !gtPhone ? 0 : spacing,
         }}
@@ -61,8 +67,16 @@ const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
 };
 
 const Avatar = memo(() => {
+  const theme = useAppTheme();
   return (
-    <View style={styles.avatar}>
+    <View
+      style={[
+        styles.avatar,
+        s.rounded_full,
+        s.items_center,
+        s.justify_center,
+        theme.utils.background2,
+      ]}>
       <Text>😀</Text>
     </View>
   );
@@ -71,16 +85,10 @@ const Avatar = memo(() => {
 Avatar.displayName = 'Avatar';
 
 const styles = StyleSheet.create({
-  avatar: flatten([
-    {
-      width: 32,
-      height: 32,
-      backgroundColor: '#f0f0f0',
-    },
-    s.rounded_full,
-    s.items_center,
-    s.justify_center,
-  ]),
+  avatar: {
+    width: 32,
+    height: 32,
+  },
 });
 
 export default memo(FeedListItem);

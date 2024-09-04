@@ -15,7 +15,9 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/match-media": "^0.4.0",
     "@expo/vector-icons": "^14.0.2",
+    "@react-navigation/drawer": "^6.7.2",
     "@react-navigation/native": "^6.0.2",
     "dayjs": "^1.11.13",
     "expo": "~51.0.28",
@@ -24,6 +26,7 @@
     "expo-image": "^1.12.15",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.23",
+    "expo-screen-orientation": "~7.0.5",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.7",

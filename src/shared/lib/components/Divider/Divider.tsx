@@ -2,6 +2,8 @@ import React, { memo } from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 
+import { useAppTheme } from '#/shared/lib/styles/theme';
+
 interface IDividerProps {
   color?: string;
   direction?: 'horizontal' | 'vertical';
@@ -9,7 +11,7 @@ interface IDividerProps {
 }
 
 const Divider: React.FC<IDividerProps> = ({
-  color = '#414141',
+  color,
   direction = 'horizontal',
   style,
 }) => {
@@ -17,12 +19,13 @@ const Divider: React.FC<IDividerProps> = ({
     direction === 'horizontal'
       ? styles.dividerHorizontal
       : styles.dividerVertical;
+  const theme = useAppTheme();
 
   return (
     <View
       style={StyleSheet.flatten([
         styleDirection,
-        { backgroundColor: color },
+        { backgroundColor: color ?? theme.colors.border },
         style,
       ])}
     />

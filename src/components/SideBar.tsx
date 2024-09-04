@@ -1,14 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
 import type { Href } from 'expo-router';
 import { usePathname, useRouter } from 'expo-router';
 import { memo, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Animated, Pressable, Text, View } from 'react-native';
 
-import { useBreakpoints } from '#/shared/lib/breakpoints';
+import useBreakpoints from '#/shared/lib/breakpoints';
 import Collapsible from '#/shared/lib/components/Collapsible';
 import Divider from '#/shared/lib/components/Divider';
 import { s } from '#/shared/lib/styles';
+import { useAppTheme } from '#/shared/lib/styles/theme';
 
 type SideMainMenuItemProps = {
   title: string;
@@ -23,15 +23,15 @@ const SideMainMenuItem: React.FC<SideMainMenuItemProps> = ({
   title,
   isActive,
 }) => {
-  const { colors } = useTheme();
+  const t = useAppTheme();
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
 
   const itemColor =
     isHovered && !isActive
-      ? colors.border
+      ? t.colors.border
       : isActive
-        ? colors.primary
+        ? t.colors.primary
         : 'transparent';
 
   return (
@@ -50,13 +50,12 @@ const SideMainMenuItem: React.FC<SideMainMenuItemProps> = ({
         onHoverOut={() => setIsHovered(false)}
         onPress={() => router.navigate(route as Href)}
         style={[s.flex_row, s.gap_md, s.items_center]}>
-        <Icon color={colors.text}></Icon>
+        <Icon color={t.colors.text}></Icon>
         <Text
           style={[
-            {
-              color: colors.text,
-            },
-            s.font_bold,
+            t.utils.text,
+            isActive ? s.font_bold : s.font_normal,
+            s.text_lg,
           ]}>
           {title}
         </Text>
@@ -65,10 +64,36 @@ const SideMainMenuItem: React.FC<SideMainMenuItemProps> = ({
   );
 };
 
+const OTHER_MEMES_MENU: typeof SIDE_MAIN_MENU = [
+  {
+    title: 'Peringkat',
+    Icon: (props) => (
+      <Ionicons size={20} color={props.color} name="trophy-outline" />
+    ),
+    route: '/leaderboard',
+  },
+  {
+    title: 'Tersimpan',
+    Icon: (props) => (
+      <Ionicons size={20} color={props.color} name="book-outline" />
+    ),
+    route: '/saved',
+  },
+  {
+    title: 'Acak',
+    Icon: (props) => (
+      <Ionicons size={20} color={props.color} name="shuffle-outline" />
+    ),
+    route: '/shuffle',
+  },
+];
+
 const OtherMemes = () => {
-  const { colors } = useTheme();
+  const t = useAppTheme();
+  const { colors } = useAppTheme();
   const [isHovered, setIsHovered] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [rotate] = useState(new Animated.Value(0));
 
   const itemColor = isHovered ? colors.border : 'transparent';
 
@@ -85,29 +110,48 @@ const OtherMemes = () => {
         ]}>
         <Pressable
           role="link"
-          onPress={() => setIsCollapsed((prev) => !prev)}
+          onPress={() => {
+            setIsCollapsed((prev) => !prev);
+            Animated.timing(rotate, {
+              toValue: isCollapsed ? 1 : 0,
+              duration: 250,
+              useNativeDriver: true,
+            }).start();
+          }}
           onHoverIn={() => setIsHovered(true)}
           onHoverOut={() => setIsHovered(false)}
-          style={[s.flex_row, s.gap_md, s.items_center]}>
-          <Text
-            style={[
-              {
-                color: colors.text,
-              },
-              s.font_bold,
-            ]}>
+          style={[s.flex_row, s.gap_md, s.items_center, s.justify_between]}>
+          <Text style={[t.utils.text, s.font_semibold, s.text_lg]}>
             Meme lain
           </Text>
-          {/* <Icon color={colors.text}></Icon> */}
+          <Animated.View
+            style={{
+              transform: [
+                {
+                  rotate: rotate.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['180deg', '0deg'],
+                  }),
+                },
+              ],
+            }}>
+            <Ionicons name="triangle-outline" size={16} color={colors.text} />
+          </Animated.View>
         </Pressable>
       </View>
       <Collapsible collapsed={isCollapsed}>
-        <View
-          style={{
-            height: 200,
-            backgroundColor: 'red',
-          }}>
-          <Text>Other Memes</Text>
+        <View role="list">
+          {OTHER_MEMES_MENU.map(({ Icon, route, title }) => {
+            return (
+              <SideMainMenuItem
+                key={route}
+                title={title}
+                Icon={Icon}
+                route={route}
+                isActive={false}
+              />
+            );
+          })}
         </View>
       </Collapsible>
     </View>
@@ -143,7 +187,7 @@ const SIDE_MAIN_MENU = [
     ),
     route: '/topics',
   },
-] as const;
+];
 
 const SideBar = () => {
   const { gtTablet } = useBreakpoints();
@@ -152,7 +196,7 @@ const SideBar = () => {
   if (!gtTablet) return null;
 
   return (
-    <View style={{ width: 230 }}>
+    <View role="navigation" style={[{ width: 230 }, s.mt_sm]}>
       <View role="list">
         <View role="list">
           {SIDE_MAIN_MENU.map((item) => {

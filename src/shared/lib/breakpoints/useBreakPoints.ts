@@ -1,6 +1,6 @@
 import { useMediaQuery } from 'react-responsive';
 
-export const useBreakpoints = () => {
+const useBreakpoints = () => {
   const gtPhone = useMediaQuery({ minWidth: 550 });
   const gtMobile = useMediaQuery({ minWidth: 800 });
   const gtTablet = useMediaQuery({ minWidth: 1048 });
@@ -23,3 +23,5 @@ export const useBreakpoints = () => {
     gtTablet,
   };
 };
+
+export default useBreakpoints;

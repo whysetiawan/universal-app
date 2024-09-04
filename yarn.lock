@@ -1088,6 +1088,13 @@
     json5 "^2.2.2"
     write-file-atomic "^2.3.0"
 
+"@expo/match-media@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@expo/match-media/-/match-media-0.4.0.tgz#3c2a4bd4978a8c39b475b28f28a6cad47eeb5b3f"
+  integrity sha512-8itv719IZJNITYERLQf+aDZJZyM2eigzCwq9Z8pYF9PevJLjQhjS3RJikug+d2MoKvlwwpjiaE1tA+f2hHxsMg==
+  dependencies:
+    css-mediaquery "^0.1.2"
+
 "@expo/metro-config@0.18.11":
   version "0.18.11"
   resolved "https://registry.yarnpkg.com/@expo/metro-config/-/metro-config-0.18.11.tgz#22e82d92fb9d94ac760cc8b3bff48e6f32b4f032"
@@ -1983,7 +1990,16 @@
     react-is "^16.13.0"
     use-latest-callback "^0.2.1"
 
-"@react-navigation/elements@^1.3.30":
+"@react-navigation/drawer@^6.7.2":
+  version "6.7.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-6.7.2.tgz#3c85298c73af915f3cd5e6ca26a1a26d61010256"
+  integrity sha512-o4g2zgTZa2+oLd+8V33etrSM38KIqu8S/zCBTsdsHUoQyVE7JNRiv3Qgq/jMvEb8PZCqWmm7jHItcgzrBuwyOQ==
+  dependencies:
+    "@react-navigation/elements" "^1.3.31"
+    color "^4.2.3"
+    warn-once "^0.1.0"
+
+"@react-navigation/elements@^1.3.30", "@react-navigation/elements@^1.3.31":
   version "1.3.31"
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.31.tgz#28dd802a0787bb03fc0e5be296daf1804dbebbcf"
   integrity sha512-bUzP4Awlljx5RKEExw8WYtif8EuQni2glDaieYROKTnaxsu9kEIA515sXQgUDZU4Ob12VoL7+z70uO3qrlfXcQ==
@@ -4382,6 +4398,11 @@ expo-router@~3.5.23:
     expo-splash-screen "0.27.5"
     react-native-helmet-async "2.0.4"
     schema-utils "^4.0.1"
+
+expo-screen-orientation@~7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/expo-screen-orientation/-/expo-screen-orientation-7.0.5.tgz#0a517982151c6519fa4b10ce27047de39c1f92cf"
+  integrity sha512-1j0MzVzYpjKQo4BWowQ3ZYwC3OnddX/8k06C8VYTAxMyd8ou1k+rG4tm+GIV2n2RSzc3g7cfPlQwSYr3/SGmbg==
 
 expo-splash-screen@0.27.5, expo-splash-screen@~0.27.5:
   version "0.27.5"
