@@ -4,7 +4,6 @@ import { usePathname, useRouter } from 'expo-router';
 import { memo, useState } from 'react';
 import { Animated, Pressable, Text, View } from 'react-native';
 
-import useBreakpoints from '#/shared/lib/breakpoints';
 import Collapsible from '#/shared/lib/components/Collapsible';
 import Divider from '#/shared/lib/components/Divider';
 import { s } from '#/shared/lib/styles';
@@ -115,7 +114,7 @@ const OtherMemes = () => {
             Animated.timing(rotate, {
               toValue: isCollapsed ? 1 : 0,
               duration: 250,
-              useNativeDriver: true,
+              useNativeDriver: false,
             }).start();
           }}
           onHoverIn={() => setIsHovered(true)}
@@ -190,10 +189,7 @@ const SIDE_MAIN_MENU = [
 ];
 
 const SideBar = () => {
-  const { gtTablet } = useBreakpoints();
   const path = usePathname();
-
-  if (!gtTablet) return null;
 
   return (
     <View role="navigation" style={[{ width: 230 }, s.mt_sm]}>

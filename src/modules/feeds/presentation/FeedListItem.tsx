@@ -14,7 +14,7 @@ dayjs.extend(relativeTime);
 
 const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
   const { gtPhone, gtMobile, gtTablet } = useBreakpoints();
-  const theme = useAppTheme();
+  const t = useAppTheme();
   const aspectRatio =
     (gtPhone ? 20 + item.mediaWidth : item.mediaWidth) / item.mediaHeight;
 
@@ -38,18 +38,14 @@ const FeedListItem: React.FC<{ item: Post }> = ({ item }) => {
         <View style={[s.flex_row, s.justify_between, s.items_center]}>
           <View style={[s.flex_row, s.gap_sm, s.items_center]}>
             <Avatar />
-            <Text style={{ color: theme.colors.text }}>
-              {item.userUsername}
-            </Text>
-            <Text style={{ color: theme.colors.text }}>
+            <Text style={t.utils.text}>{item.userUsername}</Text>
+            <Text style={t.utils.text}>
               · {dayjs(item.createTime).fromNow()}
             </Text>
           </View>
-          <MaterialIcons name="more-horiz" color="white" size={24} />
+          <MaterialIcons name="more-horiz" color={t.colors.text} size={24} />
         </View>
-        <Text style={[{ color: theme.colors.text }, s.my_sm]}>
-          {item.title}
-        </Text>
+        <Text style={[t.utils.text, s.my_sm]}>{item.title}</Text>
       </View>
       <Image
         source={{

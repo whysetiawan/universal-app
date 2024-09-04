@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import React from 'react';
+import { DrawerActions } from '@react-navigation/native';
+import { useNavigation, useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
 import type { DimensionValue } from 'react-native';
 import { View, Pressable, StyleSheet, Platform, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -42,8 +43,16 @@ const HeaderNavBar = () => {
 
 const HeaderLeft = () => {
   const router = useRouter();
+  const navigation = useNavigation();
+
   const { colors } = useAppTheme();
   const { gtTablet } = useBreakpoints();
+
+  useEffect(() => {
+    if (gtTablet) {
+      navigation.dispatch(DrawerActions.closeDrawer());
+    }
+  }, [gtTablet, navigation]);
 
   if (gtTablet) {
     return (
@@ -52,10 +61,10 @@ const HeaderLeft = () => {
       </Pressable>
     );
   }
-
   return (
     <>
-      <IconButton>
+      <IconButton
+        onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
         <Ionicons name="menu-outline" size={24} color={colors.text} />
       </IconButton>
 
