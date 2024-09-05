@@ -8,6 +8,7 @@ import {
 import { RefreshControl } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import type { PostType } from '#/modules/posts/application/hooks/usePostsQuery';
 import { usePostsQuery } from '#/modules/posts/application/hooks/usePostsQuery';
 import type { PostEntity } from '#/modules/posts/domain/entities/postEntity';
 import useBreakpoints from '#/shared/lib/breakpoints/useBreakPoints';
@@ -17,7 +18,11 @@ import { s } from '#/shared/lib/styles';
 
 import PostListItem from './PostListItem';
 
-const PostsList: React.FC = () => {
+interface PostsListProps {
+  type?: PostType;
+}
+
+const PostsList: React.FC<PostsListProps> = ({ type }) => {
   const { gtPhone } = useBreakpoints();
   const {
     data,
@@ -26,7 +31,7 @@ const PostsList: React.FC = () => {
     isFetchingNextPage,
     refetch,
     isRefetching,
-  } = usePostsQuery();
+  } = usePostsQuery(type);
 
   const posts = data?.pages.flat();
 

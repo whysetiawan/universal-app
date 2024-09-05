@@ -1,5 +1,7 @@
 import PostsList from '#/modules/posts/presentation/PostsList';
 
-export default function HomeScreen() {
-  return <PostsList />;
-}
+const FreshScreen = () => {
+  return <PostsList type="fresh" />;
+};
+
+export default FreshScreen;

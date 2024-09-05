@@ -2,3 +2,5 @@ node_modules/
 dist/
 .expo/
 lib/react-compiler-runtime
+scripts/
+expo-env.d.ts

@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { Href } from 'expo-router';
 import { usePathname, useRouter } from 'expo-router';
 import { memo, useEffect, useState } from 'react';
-import { Animated, Pressable, Text, View } from 'react-native';
+import { Animated, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSideBar } from '#/components/SideBar/SideBarContext';
@@ -27,6 +27,7 @@ const SideMainMenuItem: React.FC<SideMainMenuItemProps> = ({
 }) => {
   const t = useAppTheme();
   const [isHovered, setIsHovered] = useState(false);
+  const { closeSideBar } = useSideBar();
   const router = useRouter();
 
   const itemColor =
@@ -50,7 +51,10 @@ const SideMainMenuItem: React.FC<SideMainMenuItemProps> = ({
         role="link"
         onHoverIn={() => setIsHovered(true)}
         onHoverOut={() => setIsHovered(false)}
-        onPress={() => router.navigate(route as Href)}
+        onPress={() => {
+          router.navigate(route as Href);
+          closeSideBar();
+        }}
         style={[s.flex_row, s.gap_md, s.items_center]}>
         <Icon color={t.colors.text}></Icon>
         <Text
@@ -196,17 +200,17 @@ const SideBar = () => {
   const t = useAppTheme();
 
   return (
-    <SafeAreaView
+    <ScrollView
       // showsVerticalScrollIndicator={false}
       role="navigation"
       style={[
-        { width: 230 },
+        { width: 230, zIndex: 10 },
         s.flex_grow_0,
         s.pt_sm,
         s.h_full,
         t.utils.background,
       ]}>
-      <View role="list">
+      <SafeAreaView role="list">
         <View role="list">
           {SIDE_MAIN_MENU.map((item) => {
             const isActive =
@@ -223,8 +227,8 @@ const SideBar = () => {
         </View>
         <Divider style={s.my_xs} />
         <OtherMemes />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 

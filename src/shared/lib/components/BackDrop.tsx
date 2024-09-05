@@ -29,6 +29,7 @@ const BackDrop: React.FC<PropsWithChildren<BackDropProps>> = ({
           styles.abs,
           {
             display: visible ? 'flex' : 'none',
+            zIndex: 0,
           },
         ]}
       />
@@ -38,6 +39,7 @@ const BackDrop: React.FC<PropsWithChildren<BackDropProps>> = ({
           style,
           {
             display: visible ? 'flex' : 'none',
+            zIndex: 1,
           },
         ]}>
         {children}

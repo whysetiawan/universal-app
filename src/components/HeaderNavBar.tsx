@@ -49,11 +49,7 @@ const HeaderLeft = () => {
   const { openSideBar } = useSideBar();
 
   if (gtTablet) {
-    return (
-      <Pressable style={s.flex_grow} onPress={() => router.navigate('/')}>
-        <Text style={styles.logo}>LAHELU</Text>
-      </Pressable>
-    );
+    return <Logo />;
   }
   return (
     <>
@@ -61,10 +57,17 @@ const HeaderLeft = () => {
         <Ionicons name="menu-outline" size={24} color={colors.text} />
       </IconButton>
 
-      <Pressable style={s.flex_grow} onPress={() => router.navigate('/')}>
-        <Text style={styles.logo}>LAHELU</Text>
-      </Pressable>
+      <Logo />
     </>
+  );
+};
+
+const Logo = () => {
+  const router = useRouter();
+  return (
+    <Pressable style={s.flex_grow} onPress={() => router.navigate('/')}>
+      <Text style={styles.logo}>LAHELU</Text>
+    </Pressable>
   );
 };
 

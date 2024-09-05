@@ -1,8 +1,11 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import postRepositoryImpl from '#/modules/posts/data/postRepositoryImpl';
+import { queryKeys } from '#/shared/lib/react-query/queryKeys';
 
-export const usePostsQuery = () => {
+export type PostType = 'fresh' | 'trending' | undefined;
+
+export const usePostsQuery = (type: PostType) => {
   return useInfiniteQuery({
     initialPageParam: 1,
     queryFn: ({ pageParam }) => {
@@ -11,6 +14,6 @@ export const usePostsQuery = () => {
     getNextPageParam: (lastPage, _, lastPageParam) => {
       return lastPage.length < 10 ? undefined : lastPageParam + 1;
     },
-    queryKey: ['posts'],
+    queryKey: queryKeys.getPosts(type),
   });
 };
