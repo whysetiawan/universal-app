@@ -1,9 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { Href } from 'expo-router';
 import { usePathname, useRouter } from 'expo-router';
-import { memo, useState } from 'react';
-import { Animated, Pressable, Text, View } from 'react-native';
+import { memo, useEffect, useState } from 'react';
+import { Animated, Pressable, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useSideBar } from '#/components/SideBar/SideBarContext';
+import BackDrop from '#/shared/lib/components/BackDrop';
 import Collapsible from '#/shared/lib/components/Collapsible';
 import Divider from '#/shared/lib/components/Divider';
 import { s } from '#/shared/lib/styles';
@@ -190,10 +193,20 @@ const SIDE_MAIN_MENU = [
 
 const SideBar = () => {
   const path = usePathname();
+  const t = useAppTheme();
 
   return (
-    <View role="navigation" style={[{ width: 230 }, s.mt_sm]}>
-      <View role="list">
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      role="navigation"
+      style={[
+        { width: 230 },
+        s.flex_grow_0,
+        s.pt_sm,
+        t.utils.background,
+        s.h_full,
+      ]}>
+      <SafeAreaView role="list">
         <View role="list">
           {SIDE_MAIN_MENU.map((item) => {
             const isActive =
@@ -210,9 +223,61 @@ const SideBar = () => {
         </View>
         <Divider style={s.my_xs} />
         <OtherMemes />
-      </View>
-    </View>
+        <OtherMemes />
+        <OtherMemes />
+        <OtherMemes />
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
-export default memo(SideBar);
+interface SideBarProps {
+  asDrawer?: boolean;
+}
+
+const SideBarImpl: React.FC<SideBarProps> = ({ asDrawer }) => {
+  const { isSideBarOpen, closeSideBar } = useSideBar();
+  const [isBackDropVisible, setIsBackDropVisible] = useState(false);
+  const [transX] = useState(new Animated.Value(-230));
+
+  useEffect(() => {
+    if (!asDrawer) {
+      return;
+    }
+    if (isSideBarOpen) {
+      setIsBackDropVisible(true);
+      Animated.timing(transX, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(transX, {
+        toValue: -232,
+        duration: 250,
+        useNativeDriver: true,
+      }).start(() => {
+        setIsBackDropVisible(false);
+      });
+    }
+  }, [asDrawer, isSideBarOpen, transX]);
+
+  if (asDrawer) {
+    return (
+      <BackDrop
+        visible={isBackDropVisible}
+        style={[s.h_full]}
+        onPress={closeSideBar}>
+        <Animated.View
+          style={{
+            height: '100%',
+            transform: [{ translateX: transX }],
+          }}>
+          <SideBar />
+        </Animated.View>
+      </BackDrop>
+    );
+  }
+  return <SideBar />;
+};
+export default memo(SideBarImpl);

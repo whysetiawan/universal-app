@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
-import { DrawerActions } from '@react-navigation/native';
-import { useNavigation, useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
+import { useRouter } from 'expo-router';
+import React from 'react';
 import type { DimensionValue } from 'react-native';
 import { View, Pressable, StyleSheet, Platform, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useSideBar } from '#/components/SideBar/SideBarContext';
 import useBreakpoints from '#/shared/lib/breakpoints';
 import IconButton from '#/shared/lib/components/IconButton';
 import { s } from '#/shared/lib/styles';
@@ -43,16 +43,10 @@ const HeaderNavBar = () => {
 
 const HeaderLeft = () => {
   const router = useRouter();
-  const navigation = useNavigation();
 
   const { colors } = useAppTheme();
   const { gtTablet } = useBreakpoints();
-
-  useEffect(() => {
-    if (gtTablet) {
-      navigation.dispatch(DrawerActions.closeDrawer());
-    }
-  }, [gtTablet, navigation]);
+  const { openSideBar } = useSideBar();
 
   if (gtTablet) {
     return (
@@ -63,8 +57,7 @@ const HeaderLeft = () => {
   }
   return (
     <>
-      <IconButton
-        onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
+      <IconButton onPress={openSideBar}>
         <Ionicons name="menu-outline" size={24} color={colors.text} />
       </IconButton>
 

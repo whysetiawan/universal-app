@@ -867,4 +867,8 @@ export const utilities = StyleSheet.create({
   italic: {
     fontStyle: 'italic',
   },
+
+  cursor_pointer: {
+    cursor: 'pointer',
+  },
 } as const);

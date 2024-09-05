@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import { View, type ListRenderItem } from 'react-native';
+import { memo, useCallback } from 'react';
+import { Platform, View, type ListRenderItem } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -19,20 +19,26 @@ const PostsList: React.FC = () => {
     message: error?.message,
   });
 
-  console.log('data', data);
-
   const posts = data?.pages.flat();
 
-  const _renderItem: ListRenderItem<PostEntity> = ({ item }) => {
+  const _renderItem: ListRenderItem<PostEntity> = useCallback(({ item }) => {
     return <FeedListItem item={item} />;
-  };
+  }, []);
+
+  const _keyExtractor = useCallback((item: PostEntity) => item.id, []);
 
   return (
     <SafeAreaView edges={['left']} style={s.flex_1}>
       <FlatList
+        removeClippedSubviews
+        showsVerticalScrollIndicator={
+          Platform.OS === 'android' || Platform.OS === 'ios'
+        }
+        maxToRenderPerBatch={3}
+        keyExtractor={_keyExtractor}
         contentContainerStyle={[s.pt_lg, s.flex_grow]}
         refreshControl={<RefreshControl refreshing={false} />}
-        showsVerticalScrollIndicator={false}
+        windowSize={5}
         role="main"
         data={posts ?? []}
         renderItem={_renderItem}

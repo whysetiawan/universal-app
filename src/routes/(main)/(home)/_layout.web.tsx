@@ -1,6 +1,5 @@
-import useTheme from '@react-navigation/native/lib/typescript/src/theming/useTheme';
 import type { Href } from 'expo-router';
-import { Slot, usePathname, useRouter, useSegments } from 'expo-router';
+import { Slot, usePathname, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
   Animated,
@@ -14,7 +13,6 @@ import {
 import Divider from '#/shared/lib/components/Divider';
 import { s, theme } from '#/shared/lib/styles';
 import { useAppTheme } from '#/shared/lib/styles/theme';
-import logger from '#/shared/utils/logger';
 
 const TabHomeLayout = () => {
   return (
