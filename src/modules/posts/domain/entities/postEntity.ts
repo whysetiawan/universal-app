@@ -10,6 +10,7 @@ const postEntity = z.object({
   createdAt: z.number(),
   postedBy: memberEntity,
   media: postMedia,
+  tags: z.array(z.string()),
 });
 
 type RawPostEntity = z.infer<typeof postEntity>;

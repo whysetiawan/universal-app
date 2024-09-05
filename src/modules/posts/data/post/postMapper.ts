@@ -23,6 +23,7 @@ export const mapGetPostsResponseToEntity = (
         username: post.userUsername,
       }),
       title: post.title,
+      tags: post.hashtags,
     });
   });
 };

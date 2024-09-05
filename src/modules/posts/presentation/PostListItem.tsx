@@ -6,13 +6,15 @@ import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import type { PostEntity } from '#/modules/posts/domain/entities/postEntity';
+import TagList from '#/modules/posts/presentation/TagList';
 import useBreakpoints from '#/shared/lib/breakpoints';
+import Chip from '#/shared/lib/components/Chip';
 import { s } from '#/shared/lib/styles';
 import { useAppTheme } from '#/shared/lib/styles/theme';
 
 dayjs.extend(relativeTime);
 
-const FeedListItem: React.FC<{ item: PostEntity }> = ({ item }) => {
+const PostListItem: React.FC<{ item: PostEntity }> = ({ item }) => {
   const { gtPhone, gtMobile, gtTablet } = useBreakpoints();
   const t = useAppTheme();
   const aspectRatio =
@@ -59,6 +61,24 @@ const FeedListItem: React.FC<{ item: PostEntity }> = ({ item }) => {
           backgroundColor: t.colors.background,
         }}
       />
+      <View
+        style={{
+          paddingHorizontal: spacing,
+        }}>
+        <View style={[s.flex_row, s.gap_md, s.flex_wrap]}>
+          <Chip
+            style={{
+              backgroundColor: '#dd952a',
+              borderColor: '#dd952a',
+            }}>
+            <View style={[s.flex_row, s.items_center, s.gap_sm]}>
+              <Text style={t.utils.text}>$</Text>
+              <Text style={[t.utils.text, s.font_bold]}>Sawer</Text>
+            </View>
+          </Chip>
+          <TagList tags={item.tags} />
+        </View>
+      </View>
     </View>
   );
 };
@@ -88,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(FeedListItem);
+export default memo(PostListItem);

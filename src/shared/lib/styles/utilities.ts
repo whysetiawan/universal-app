@@ -1,7 +1,10 @@
 import { Platform, StyleSheet } from 'react-native';
 
 import * as tokens from './tokens';
-
+/**
+ * This file contains utility styles that can be used across the app.
+ * These styles follow the utility-first approach like Tailwind CSS.
+ */
 export const utilities = StyleSheet.create({
   /*
    * Positioning

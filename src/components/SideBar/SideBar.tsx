@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { Href } from 'expo-router';
 import { usePathname, useRouter } from 'expo-router';
 import { memo, useEffect, useState } from 'react';
-import { Animated, Pressable, ScrollView, Text, View } from 'react-native';
+import { Animated, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSideBar } from '#/components/SideBar/SideBarContext';
@@ -196,17 +196,17 @@ const SideBar = () => {
   const t = useAppTheme();
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
+    <SafeAreaView
+      // showsVerticalScrollIndicator={false}
       role="navigation"
       style={[
         { width: 230 },
         s.flex_grow_0,
         s.pt_sm,
-        t.utils.background,
         s.h_full,
+        t.utils.background,
       ]}>
-      <SafeAreaView role="list">
+      <View role="list">
         <View role="list">
           {SIDE_MAIN_MENU.map((item) => {
             const isActive =
@@ -223,11 +223,8 @@ const SideBar = () => {
         </View>
         <Divider style={s.my_xs} />
         <OtherMemes />
-        <OtherMemes />
-        <OtherMemes />
-        <OtherMemes />
-      </SafeAreaView>
-    </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -239,6 +236,7 @@ const SideBarImpl: React.FC<SideBarProps> = ({ asDrawer }) => {
   const { isSideBarOpen, closeSideBar } = useSideBar();
   const [isBackDropVisible, setIsBackDropVisible] = useState(false);
   const [transX] = useState(new Animated.Value(-230));
+  const t = useAppTheme();
 
   useEffect(() => {
     if (!asDrawer) {
@@ -269,10 +267,13 @@ const SideBarImpl: React.FC<SideBarProps> = ({ asDrawer }) => {
         style={[s.h_full]}
         onPress={closeSideBar}>
         <Animated.View
-          style={{
-            height: '100%',
-            transform: [{ translateX: transX }],
-          }}>
+          style={[
+            s.h_full,
+            t.utils.background,
+            {
+              transform: [{ translateX: transX }],
+            },
+          ]}>
           <SideBar />
         </Animated.View>
       </BackDrop>
@@ -280,4 +281,5 @@ const SideBarImpl: React.FC<SideBarProps> = ({ asDrawer }) => {
   }
   return <SideBar />;
 };
+
 export default memo(SideBarImpl);

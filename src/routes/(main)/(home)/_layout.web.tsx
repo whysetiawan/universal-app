@@ -79,13 +79,21 @@ const Header = () => {
   return (
     <>
       <View style={[s.w_full, s.flex_row]}>
-        {HOME_ROUTES.map((href) => {
+        {HOME_ROUTES.map((href, idx) => {
+          const isActive = currentActiveTab === idx;
           return (
             <Pressable
               key={href.title}
               onPress={() => router.navigate(href.route)}
               style={[styles.tabItem, t.utils.background]}>
-              <Text style={[s.text_md, s.font_bold, t.utils.text]}>
+              <Text
+                style={[
+                  s.text_md,
+                  s.font_bold,
+                  {
+                    color: isActive ? t.colors.primary : t.colors.text,
+                  },
+                ]}>
                 {href.title}
               </Text>
             </Pressable>
