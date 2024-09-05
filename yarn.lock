@@ -7920,13 +7920,6 @@ react-native-collapsible@^1.6.2:
   resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-1.6.2.tgz#3b67fa402a6ba3c291022f5db8f345083862c3d8"
   integrity sha512-MCOBVJWqHNjnDaGkvxX997VONmJeebh6wyJxnHEgg0L1PrlcXU1e/bo6eK+CDVFuMrCafw8Qh4DOv/C4V/+Iew==
 
-react-native-drawer-layout@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/react-native-drawer-layout/-/react-native-drawer-layout-3.3.2.tgz#d6640940fa1daa3e07edf5e8223b143220a568fe"
-  integrity sha512-Xr2qNT+v6lbVlWSuijx9D6p1NX6d2rE9wa7/Vpg9wy9EtSZGRP71F8XTkug9kgG+KlsxNcdWhqMFm/0lbPmlpQ==
-  dependencies:
-    use-latest-callback "^0.2.1"
-
 react-native-gesture-handler@^2.19.0:
   version "2.19.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.19.0.tgz#16deaefcefe77d6b4b7fa48a82ef52be61ddbb07"

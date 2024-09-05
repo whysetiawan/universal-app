@@ -42,8 +42,6 @@ const HeaderNavBar = () => {
 };
 
 const HeaderLeft = () => {
-  const router = useRouter();
-
   const { colors } = useAppTheme();
   const { gtTablet } = useBreakpoints();
   const { openSideBar } = useSideBar();
