@@ -1,14 +1,18 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider as NavigationThemeProvider,
-} from '@react-navigation/native';
+import { PortalHost, PortalProvider } from '@gorhom/portal';
+import { ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+import { queryClient } from '#/shared/lib/react-query/queryClient';
+import { theme } from '#/shared/lib/styles';
+
 import 'react-native-reanimated';
+import '@expo/match-media';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -34,18 +38,27 @@ export default function AppLayout() {
   }
 
   return (
-    <NavigationThemeProvider
-      value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <RootNavigation />
-    </NavigationThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <NavigationThemeProvider
+        value={colorScheme === 'dark' ? theme.DarkTheme : theme.LightTheme}>
+        <PortalProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <RootNavigation />
+          </GestureHandlerRootView>
+        </PortalProvider>
+      </NavigationThemeProvider>
+    </QueryClientProvider>
   );
 }
 
 const RootNavigation: React.FC = () => {
   return (
-    <Stack>
-      <Stack.Screen name="(main)" />
-      <Stack.Screen name="+not-found" />
-    </Stack>
+    <>
+      <Stack>
+        <Stack.Screen name="(main)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <PortalHost name="portal1" />
+    </>
   );
 };
