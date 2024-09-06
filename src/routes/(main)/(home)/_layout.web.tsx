@@ -47,6 +47,7 @@ const Header = () => {
   const t = useAppTheme();
   const router = useRouter();
   const pathname = usePathname();
+  // it's intended to useState instead useRef. if using useRef it will violate the eslint-plugin-react-compiler rule
   const [indicatorPosition] = useState(new Animated.Value(0));
 
   const currentActiveTab = HOME_ROUTES.findIndex((route) =>
