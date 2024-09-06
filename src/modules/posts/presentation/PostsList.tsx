@@ -1,6 +1,8 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import type { ViewToken } from 'react-native';
 import {
   ActivityIndicator,
+  Dimensions,
   Platform,
   View,
   type ListRenderItem,
@@ -33,6 +35,9 @@ const PostsList: React.FC<PostsListProps> = ({ type }) => {
     isRefetching,
   } = usePostsQuery(type);
 
+  const scrollRef = useRef<FlatList>(null);
+  const focusedIndex = useRef<number | null>(0);
+
   const posts = data?.pages.flat();
 
   const _renderItem: ListRenderItem<PostEntity> = useCallback(({ item }) => {
@@ -40,6 +45,66 @@ const PostsList: React.FC<PostsListProps> = ({ type }) => {
   }, []);
 
   const _keyExtractor = useCallback((item: PostEntity) => item.id, []);
+
+  const _renderFooter = useCallback(() => {
+    if (isFetchingNextPage) {
+      return <ActivityIndicator size="large" />;
+    }
+    return null;
+  }, [isFetchingNextPage]);
+
+  const _renderSeparator = useCallback(() => {
+    if (gtPhone) {
+      return <Divider style={s.my_xl} />;
+    }
+    return <View style={{ height: 16 }} />;
+  }, [gtPhone]);
+
+  const _onItemViewableItemsChanged = useCallback(
+    (info: {
+      viewableItems: ViewToken<PostEntity>[];
+      changed: ViewToken<PostEntity>[];
+    }) => {
+      const { changed } = info;
+      if (changed.length > 0) {
+        for (const item of changed) {
+          if (item.isViewable) {
+            focusedIndex.current = item.index;
+          }
+        }
+      }
+    },
+    [focusedIndex],
+  );
+
+  const viewabilityConfig = useMemo(() => {
+    return {
+      itemVisiblePercentThreshold: 40,
+      minimumViewTime: 100,
+    };
+  }, []);
+
+  const _onEndReached = useCallback(() => {
+    fetchNextPage();
+  }, [fetchNextPage]);
+
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      return;
+    }
+    const dimChange = Dimensions.addEventListener('change', () => {
+      if (focusedIndex.current) {
+        scrollRef.current?.scrollToIndex({
+          index: focusedIndex.current,
+          animated: false,
+        });
+      }
+    });
+
+    return () => {
+      dimChange.remove();
+    };
+  }, []);
 
   if (isPending) {
     return (
@@ -57,6 +122,7 @@ const PostsList: React.FC<PostsListProps> = ({ type }) => {
         showsVerticalScrollIndicator={
           Platform.OS === 'android' || Platform.OS === 'ios'
         }
+        ref={scrollRef}
         maxToRenderPerBatch={10}
         onEndReachedThreshold={1}
         keyExtractor={_keyExtractor}
@@ -67,16 +133,11 @@ const PostsList: React.FC<PostsListProps> = ({ type }) => {
         windowSize={11}
         data={posts ?? []}
         renderItem={_renderItem}
-        onEndReached={() => fetchNextPage()}
-        ItemSeparatorComponent={() => {
-          if (gtPhone) {
-            return <Divider style={s.my_xl} />;
-          }
-          return <View style={{ height: 16 }} />;
-        }}
-        ListFooterComponent={() =>
-          isFetchingNextPage ? <ActivityIndicator size="large" /> : null
-        }
+        onEndReached={_onEndReached}
+        ItemSeparatorComponent={_renderSeparator}
+        ListFooterComponent={_renderFooter}
+        viewabilityConfig={viewabilityConfig}
+        onViewableItemsChanged={_onItemViewableItemsChanged}
       />
     </SafeAreaView>
   );
